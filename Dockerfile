@@ -1,5 +1,6 @@
 FROM python:3.6
 ENV SUDOFILE /etc/sudoers
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash
 Run apt-get update -y &&\
     apt-get -y install \
            rsyslog \
@@ -15,6 +16,7 @@ Run apt-get update -y &&\
            locales \
            nginx \
            vim \
+           nodejs \
            dstat &&\
            apt-get clean all
 
