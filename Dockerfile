@@ -14,6 +14,7 @@ Run apt-get update -y &&\
            sed \
            locales \
            nginx \
+           vim \
            dstat &&\
            apt-get clean all
 
@@ -26,7 +27,8 @@ RUN mkdir -p /var/run/sshd &&\
     echo 'vagrant ALL = NOPASSWD: ALL' > /etc/sudoers.d/vagrant &&\
     chmod 440 /etc/sudoers.d/vagrant &&\
     mkdir -p /home/vagrant/.ssh &&\
-    chmod 700 /home/vagrant/.ssh
+    chmod 700 /home/vagrant/.ssh &&\
+    systemctl enable nginx
 
 ADD https://raw.githubusercontent.com/hashicorp/vagrant/master/keys/vagrant.pub /home/vagrant/.ssh/authorized_keys
 ADD run.sh /home/vagrant/run.sh
