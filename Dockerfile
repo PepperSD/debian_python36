@@ -1,8 +1,9 @@
 FROM python:3.6
 ENV SUDOFILE /etc/sudoers
+ARG CHROME_VERSION="google-chrome-stable"
 RUN curl -sL https://deb.nodesource.com/setup_10.x | bash &&\
     apt-get update
-Run apt-get update -y &&\
+RUN apt-get update -y &&\
     apt-get -y install \
            rsyslog \
            systemd \
@@ -19,8 +20,19 @@ Run apt-get update -y &&\
            vim \
            nodejs \
            postgresql \
+           libglib2.0-0 \
+           libnss3 \
+           libgconf-2-4 \
+           libfontconfig \
            dstat &&\
+           wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - &&\
+           echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list &&\
+           apt-get update -qqy &&\
+           apt-get -qqy install ${CHROME_VERSION} &&\
+           rm /etc/apt/sources.list.d/google-chrome.list &&\
+           rm -rf /var/lib/apt/lists/* /var/cache/apt/* &&\
            apt-get clean all
+
 
 RUN pip install --upgrade pip setuptools ansible virtualenv circus tox passlib
 ## setup sshd and generate ssh-keys by init script
